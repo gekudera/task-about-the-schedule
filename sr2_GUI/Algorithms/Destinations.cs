@@ -8,276 +8,132 @@ namespace sr2_GUI
 {
     class Destinations
     {
-        int size;         //сколько работ и работников
-        IMatrix P;     //матрица производительности
-		IMatrix S;     //простейшая матрица из 0 и 1
-		SimpleVector V;
-		SimpleVector U;
-		SimpleVector Solution;
-
-		public Destinations(int siz, IMatrix som)
+        public int[] KuhnMunkres(int[,] a)
         {
-            this.size = siz;
-            this.P = som;
+            int N = a.GetLength(0);
+            if (N == 0)
+                return new int[0];
 
-			S = new SomeMatrix(size, size);
-			for (int i=0; i<size; i++)
+            int[] lx = new int[N], ly = new int[N];   // функция маркировки вершин в первом и втором разбиениях
+            int[] mx = new int[N], my = new int[N];   // mx[u]=v, my[v]=u <==> u and v are currently matched;  -1 значения - несоответствие
+            int[] px = new int[N], py = new int[N];   // predecessor arrays.  used in DFS to reconstruct paths.
+            int[] stack = new int[N];
+
+            // invariant: lx[u] + ly[v] >= a[u, v]
+            // (implies that any perfect matching in subgraph containing only
+            // edges u, v for which lx[u]+ly[v]=a[u,v] is the optimal matching.)
+
+            // compute initial labelling function:  lx[i] = max_j(a[i, j]), ly[j] = 0;
+            for (int i = 0; i < N; i++)
             {
-				for (int j = 0; j < size; j++)
-					S.SetValue(0, i, j);
+                lx[i] = a[i, 0];
+                for (int j = 0; j < N; j++)
+                    if (a[i, j] > lx[i]) lx[i] = a[i, j];
+                ly[i] = 0;
+
+                mx[i] = my[i] = -1;
             }
 
-			V = new SimpleVector(size);
-			U = new SimpleVector(size);
-			for (int i = 0; i < size; i++)
-			{
-				U[i] = 0;
-			}
-			Solution = new SimpleVector(size);
-		}
+            for (int size = 0; size < N;)
+            {
+                int s;
+                for (s = 0; mx[s] != -1; s++) ;
 
-        public IMatrix DoBoolMatrix()
-        {
-			double max;
-			for (int i = 0; i < size; i++)
-			{
-				max = 0;
-				int index=0;
-				for (int j = 0; j < size; j++)
-				{
-					if (P.GetValue(i,j) >= max)
-					{
-						max = P.GetValue(i,j);
-						index = j;
-					}
-				}
-				S.SetValue(1, i, index);
-				V[i] = max;
-				for (int j = 0; j < size; j++)
-				{
-					if ((P.GetValue(i,j) == max) && (j != index))
-					{
-						S.SetValue(1, i, j);
-					}
-				}
-			}
-			return S;
-		}
+                // s is an unmatched vertex in the first partition.
+                // At the current iteration we will either find an augmenting path
+                // starting at s, or we'll extend the equality subgraph so that
+                // such a path will exist at the next iteration.
 
-		private IMatrix BoolMatrix()
-		{
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
-					if (P.GetValue(i, j) == (V[i] + U[j]))
-						S.SetValue(1, i, j);
-					else S.SetValue(0, i, j);
-				}
-			}
-			return S;
-		}
+                for (int i = 0; i < N; i++)
+                    px[i] = py[i] = -1;
+                px[s] = s;
 
+                // DFS
+                int t = -1;
+                stack[0] = s;
+                for (int top = 1; top > 0;)
+                {
+                    int u = stack[--top];
+                    for (int v = 0; v < N; v++)
+                    {
+                        if (lx[u] + ly[v] == a[u, v] && py[v] == -1)
+                        {
+                            if (my[v] == -1)
+                            {
+                                // we've found an augmenting path
+                                t = v;
+                                py[t] = u;
+                                top = 0;
+                                break;
+                            }
 
-		private void poisk()
-		{
-			for (int i = 0; i < size; i++)
-			{
-				Solution[i] = -1;
-			}
-			int a = 0, b = 0, bezrab = 0, first = 0, noone, count = 1;
-			int flag1 = 0;//флаг чтобы он находил только 1 единичку в строчее
-			int flag3 = 0;
-			int flag2 = 0;
-			int flag4 = 0;
+                            py[v] = u;
+                            px[my[v]] = v;
+                            stack[top++] = my[v];
+                        }
+                    }
+                }
 
-			int[] remember = new int[size];
-			int[] works = new int[size]; //для записи выбранных работ(чтобы их не выбирали 2 раз)
-			for (int i = 0; i < size; i++)
-				works[i] = -1;
-			int[,] S1 = new int[size,size]; //матрица 5х5 для записи пройденных цепочек
+                if (t != -1)
+                {
+                    // augment along the found path
+                    while (true)
+                    {
+                        int u = py[t];
+                        mx[u] = t;
+                        my[t] = u;
+                        if (u == s) break;
+                        t = px[u];
+                    }
+                    ++size;
+                }
+                else
+                {
+                    // No augmenting path exists from s in the current equality graph,
+                    // Modify labelling function a bit...
 
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-					S1[i,j] = 0;
-			}
+                    int delta = int.MaxValue;
+                    for (int u = 0; u < N; u++)
+                    {
+                        if (px[u] == -1) continue;
+                        for (int v = 0; v < N; v++)
+                        {
+                            if (py[v] != -1) continue;
+                            int z = lx[u] + ly[v] - a[u, v];
+                            if (z < delta)
+                                delta = z;
+                        }
+                    }
 
-			Stack<int> steck = new Stack<int>();
+                    for (int i = 0; i < N; i++)
+                    {
+                        if (px[i] != -1) lx[i] -= delta;
+                        if (py[i] != -1) ly[i] += delta;
+                    }
+                }
+            }
 
+            // Verify optimality
+            bool correct = true;
+            for (int u = 0; u < N; u++)
+            {
+                for (int v = 0; v < N; v++)
+                {
+                    correct &= (lx[u] + ly[v] >= a[u, v]);
+                    if (mx[u] == v)
+                        correct &= (lx[u] + ly[v] == a[u, v]);
 
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
+                    if (!correct)
+                    {
+                        throw new Exception(
+                            "*** Internal error: optimality conditions are not satisfied ***\n" +
+                            "Most probably an overflow occurred");
+                    }
+                }
+            }
 
-					if ((S.GetValue(i,j) == 1) && (a == 0))
-					{
-						for (int k = 0; k < size; k++)
-						{
-							if (Solution[k] == j) //проверка на то, что этот столбец еще не взят
-							{
-								b++;
-							}
-						}
-						if (b == 0)
-						{
-							Solution[i] = j;
-							a = 1;
-							Console.Write( (i + 1) + " работник взял " + (j + 1) + " работу\n");
-						}
-					}
-					b = 0;
-				}
-				a = 0;
-				if (Solution[i] == -1)
-				{
-					Console.Write((i + 1) + " работник не нашел работу\n");
-					bezrab = i;
-					first = i;
-					V[bezrab] = V[bezrab] - 1;
-					steck.Push(bezrab);
-				}
-			}
-			SimpleVector Solution1 = new SimpleVector(size);
-			for (int i = 0; i < size; i++)
-				Solution1[i] = Solution[i]; //создаем копию
-
-
-
-			//ПЕРЕНАЗНАЧЕНИЕ
-			Console.Write("\nЦЕПОЧКА ПЕРЕНАЗНАЧЕНИЙ: \n");
-			count = 1;
-			int last_number = -1;
-			while ((steck.Count != 0) && (flag2 == 0))
-			{
-				noone = 0;
-				flag1 = 0;
-				flag2 = 1;
-				flag4 = 0;
-				for (int j = 0; j < size; j++)
-				{
-					flag3 = 0;
-					for (int m = 0; m < size; m++)
-					{
-						if (works[m] == j)
-							flag3 = 1;
-					}
-					if ((S.GetValue(steck.Peek(),j) == 1) && (flag1 == 0) && (flag3 == 0) && ( S1[steck.Peek(),j] != 1 ))
-					{
-						flag1 = 1;
-						Solution1[steck.Peek()] = j;
-						if (count>0 && count< size)
-						works[count] = j;
-						U[j] = U[j] + 1;
-						b = j;
-						count++;
-						Console.Write( "  J" + (steck.Peek() + 1) + " на R" + (j + 1));
-						S1[steck.Peek(),j] = 1;
-						noone = 2;
-						for (int i = 0; i < size; i++)
-						{
-							if ((Solution[i] == Solution1[steck.Peek()]) && (i != steck.Peek()))
-							{
-								steck.Push(i);
-								V[steck.Peek()] = V[steck.Peek()] - 1;
-								Solution1[i] = -2;
-								Console.Write(" -> Теперь J" + (steck.Peek() + 1) + " ищет работу!! ");
-								if (steck.Peek() == first)
-								{
-									Console.Write("Цепочка замкнулась, шаг назад \n \n");
-									steck.Pop();  // удаляем верхний элемент
-									break;
-								}
-							}
-						}
-					}
-
-				}
-				if (noone == 0)
-				{
-					a = 0;
-					for (int i = 0; i < size; i++)
-					{
-						if ((S.GetValue(i,b) == 0) && (i != steck.Peek()))
-						{
-							a++;
-						}
-					}
-					if (a == 4)
-					{
-						flag4 = 1;
-						Console.Write(" Цепь замкнулась для " + (steck.Peek() + 1) + "\n");
-						steck.Pop();
-					}
-					if (flag4 == 0)
-					{
-						if (steck.Count != 0)
-						{
-							Console.Write( "J" + (steck.Peek() + 1) + " больше ничего не может. Переходим на шаг назад\n"); // выводим верхний элемент
-							if (count>0 && count< size)
-							works[count] = -1;
-							count--;
-							last_number = steck.Peek();
-							flag2 = 0;
-							Solution1[steck.Peek()] = Solution[steck.Peek()];
-							for (int j = 0; j < size; j++)
-							{
-								S1[steck.Peek(), j] = 0;
-							}
-							steck.Pop();  // удаляем верхний элемент
-						}
-						else { break; }
-					}
-				}
-
-				for (int i = 0; i < size; i++)
-				{
-					if (Solution1[i] < 0)
-						flag2 = 0;
-				}
-
-			}
-
-			for (int i = 0; i < size; i++)
-				Solution[i] = Solution1[i];
-
-			Console.Write( "\nНАЗНАЧЕНИЕ: \n" );
-			if (flag2 == 1)
-			{
-				for (int i = 0; i < size; i++)
-				{
-					Console.Write( (i + 1) + "работник на " + (Solution[i] + 1) + "работу\n");
-				}
-			}
-			else
-			{
-				Console.Write( "Невозможно распределить работников по работам!\n");
-			}
-		}
-
-
-		public SimpleVector FindSolution()
-        {
-			poisk();
-			bool fl = false;
-
-			while (fl == false)
-			{
-				fl = true;
-				S = BoolMatrix();
-				DrawInConsole cons = new DrawInConsole();
-				S.Draw(cons);
-				poisk();
-				for (int i = 0; i < size; i++)
-				{
-					if (Solution[i] < 0)
-						fl = false;
-				}
-			}
-			return Solution;
-		}
-
+            return mx;
+        }
 
 	}
 

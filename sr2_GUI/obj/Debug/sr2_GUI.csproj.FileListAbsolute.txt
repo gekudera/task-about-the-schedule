@@ -38,3 +38,13 @@ C:\Users\sekosh\Desktop\ДИПЛОМ\matrix_architecture\sr2_GUI\obj\Debug\sr2_G
 C:\Users\sekosh\Desktop\ДИПЛОМ\matrix_architecture\sr2_GUI\obj\Debug\sr2_GUI.csproj.CoreCompileInputs.cache
 C:\Users\sekosh\Desktop\ДИПЛОМ\matrix_architecture\sr2_GUI\obj\Debug\sr2_GUI.exe
 C:\Users\sekosh\Desktop\ДИПЛОМ\matrix_architecture\sr2_GUI\obj\Debug\sr2_GUI.pdb
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\bin\Debug\sr2_GUI.exe.config
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\bin\Debug\sr2_GUI.exe
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\bin\Debug\sr2_GUI.pdb
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.csprojAssemblyReference.cache
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.Form1.resources
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.Properties.Resources.resources
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.csproj.GenerateResource.cache
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.csproj.CoreCompileInputs.cache
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.exe
+C:\Users\sekosh\Desktop\ДИПЛОМ\task-about-the-schedule\sr2_GUI\obj\Debug\sr2_GUI.pdb

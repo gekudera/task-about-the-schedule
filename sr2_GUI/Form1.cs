@@ -67,8 +67,6 @@ namespace sr2_GUI
             cons = new DrawInConsole();
             form = new DrawInForm(b);
 
-            destination = new Destinations(size, current_matrix);
-            current_matrix = destination.DoBoolMatrix();
             Console.WriteLine("Простейшая матрица:   ");
             current_matrix.Draw(cons);
             current_matrix.Draw(form);
@@ -116,18 +114,24 @@ namespace sr2_GUI
             cons = new DrawInConsole();
             form = new DrawInForm(b);
 
-            destination = new Destinations(size, current_matrix);
-            current_matrix = destination.DoBoolMatrix();
-            Console.WriteLine("Простейшая матрица:   ");
-            current_matrix.Draw(cons);
+            int[,] a = new int[size, size];
+            for (int i=0; i<size; i++)
+            {
+                for (int j=0; j<size; j++)
+                {
+                    a[i, j] = Convert.ToInt32(current_matrix.GetValue(i, j));
+                }
+            }
 
-            SimpleVector sol = destination.FindSolution();
+            Destinations destination = new Destinations();
+
+            int[] vect = new int[size];
+            vect = destination.KuhnMunkres(a);
 
             current_matrix = new SomeMatrix(1, size);
-            for (int i=0; i< size; i++)
-            {
-                current_matrix.SetValue(sol[i]+1, 0, i);
-            }
+
+            for (int i = 0; i < size; i++)
+                current_matrix.SetValue(vect[i], 0, i);
 
             current_matrix.Draw(form);
         }
