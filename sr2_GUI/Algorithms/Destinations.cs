@@ -10,45 +10,38 @@ namespace sr2_GUI
     {
         public int[] KuhnMunkres(int[,] a)
         {
-            int N = a.GetLength(0);
+            int N = a.GetLength(0);   //размер
             if (N == 0)
                 return new int[0];
 
-            int[] lx = new int[N], ly = new int[N];   // функция маркировки вершин в первом и втором разбиениях
+            int[] V = new int[N], U = new int[N];     // для записи промежуточных вычислений U изначально равна 0, V - максимальным числам
             int[] mx = new int[N], my = new int[N];   // mx[u]=v, my[v]=u <==> u and v are currently matched;  -1 значения - несоответствие
-            int[] px = new int[N], py = new int[N];   // predecessor arrays.  used in DFS to reconstruct paths.
-            int[] stack = new int[N];
+            int[] px = new int[N], py = new int[N];   //px - для записи какую V на сколько уменьшать, py - для записи какую U на сколько увеличивать
+            int[] stack = new int[N];                 //для записи цепочки переназначений
 
-            // invariant: lx[u] + ly[v] >= a[u, v]
-            // (implies that any perfect matching in subgraph containing only
-            // edges u, v for which lx[u]+ly[v]=a[u,v] is the optimal matching.)
-
-            // compute initial labelling function:  lx[i] = max_j(a[i, j]), ly[j] = 0;
+            // Заполняем U и V
             for (int i = 0; i < N; i++)
             {
-                lx[i] = a[i, 0];
+                V[i] = a[i, 0];
                 for (int j = 0; j < N; j++)
-                    if (a[i, j] > lx[i]) lx[i] = a[i, j];
-                ly[i] = 0;
-
+                    if (a[i, j] > V[i])
+                    {
+                        V[i] = a[i, j];   //находим максимальные элементы в каждой строчке для массива V
+                    }
+                U[i] = 0;
                 mx[i] = my[i] = -1;
             }
 
-            for (int size = 0; size < N;)
+            for (int size = 0; size < N;)  //пока не заполнили все решение
             {
                 int s;
-                for (s = 0; mx[s] != -1; s++) ;
-
-                // s is an unmatched vertex in the first partition.
-                // At the current iteration we will either find an augmenting path
-                // starting at s, or we'll extend the equality subgraph so that
-                // such a path will exist at the next iteration.
+                for (s = 0; mx[s] != -1; s++);
+                Console.Write("\n\n s = " + s);
 
                 for (int i = 0; i < N; i++)
                     px[i] = py[i] = -1;
                 px[s] = s;
 
-                // DFS
                 int t = -1;
                 stack[0] = s;
                 for (int top = 1; top > 0;)
@@ -56,42 +49,48 @@ namespace sr2_GUI
                     int u = stack[--top];
                     for (int v = 0; v < N; v++)
                     {
-                        if (lx[u] + ly[v] == a[u, v] && py[v] == -1)
+                        if ((V[u] + U[v] == a[u, v]) && (py[v] == -1)) //пытаемся назначить работника на работу, при этом проверяем что работа не занята
                         {
-                            if (my[v] == -1)
+                            if (my[v] == -1) 
                             {
-                                // we've found an augmenting path
+                                Console.Write("\nУсловие (V[u] + U[v] == a[u, v]) && (py[v] == -1) выполняется для номера "+ v);
                                 t = v;
                                 py[t] = u;
                                 top = 0;
                                 break;
                             }
-
+ 
                             py[v] = u;
                             px[my[v]] = v;
                             stack[top++] = my[v];
+                            Console.Write("\nstack: ");
+                            for (int g=0; g<stack.Length; g++)
+                                Console.Write(stack[g]+ " ");
                         }
                     }
                 }
 
                 if (t != -1)
                 {
-                    // augment along the found path
+                    Console.Write("\nНомер назначен");
                     while (true)
                     {
                         int u = py[t];
                         mx[u] = t;
-                        my[t] = u;
+                        my[t] = u;        //записываем в my значение, чтобы больше ее не выбрали
                         if (u == s) break;
                         t = px[u];
                     }
                     ++size;
+
+                    Console.Write("  mx  = ");
+                    for (int k = 0; k < N; k++)
+                        Console.Write(mx[k] + " ");
                 }
                 else
                 {
-                    // No augmenting path exists from s in the current equality graph,
-                    // Modify labelling function a bit...
-
+                    //не существует пути и цепочки переназначений
+                    Console.Write("\nЦепочка не найдена");
                     int delta = int.MaxValue;
                     for (int u = 0; u < N; u++)
                     {
@@ -99,7 +98,7 @@ namespace sr2_GUI
                         for (int v = 0; v < N; v++)
                         {
                             if (py[v] != -1) continue;
-                            int z = lx[u] + ly[v] - a[u, v];
+                            int z = V[u] + U[v] - a[u, v];
                             if (z < delta)
                                 delta = z;
                         }
@@ -107,21 +106,30 @@ namespace sr2_GUI
 
                     for (int i = 0; i < N; i++)
                     {
-                        if (px[i] != -1) lx[i] -= delta;
-                        if (py[i] != -1) ly[i] += delta;
+                        if (px[i] != -1) V[i] -= delta;
+                        if (py[i] != -1) U[i] += delta;
                     }
+
+                    Console.Write("\n-----------------------------------\nV: ");
+                    for (int k=0; k<N; k++)
+                        Console.Write(V[k] + " ");
+                    Console.Write("U: ");
+                    for (int k = 0; k < N; k++)
+                        Console.Write(U[k] + " ");
+
+
                 }
             }
 
-            // Verify optimality
+            //Проверка оптимальности
             bool correct = true;
             for (int u = 0; u < N; u++)
             {
                 for (int v = 0; v < N; v++)
                 {
-                    correct &= (lx[u] + ly[v] >= a[u, v]);
+                    correct &= (V[u] + U[v] >= a[u, v]);
                     if (mx[u] == v)
-                        correct &= (lx[u] + ly[v] == a[u, v]);
+                        correct &= (V[u] + U[v] == a[u, v]);
 
                     if (!correct)
                     {

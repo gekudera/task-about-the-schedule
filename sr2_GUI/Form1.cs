@@ -20,7 +20,6 @@ namespace sr2_GUI
         DrawInConsole cons;
         DrawInForm form;
         int size;
-        Destinations destination;
 
         public Form1()
         {

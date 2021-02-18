@@ -74,7 +74,6 @@ namespace sr2_GUI
             }
         }
 
-
         public void Print()
         {
              g.DrawLine(p, points[0], points[1]);

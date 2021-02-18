@@ -14,6 +14,7 @@ namespace sr2_GUI
         private string buf_el;
         private string border;
         private int count_col;
+        private double[] max;
 
         public DrawInConsole()
         {
@@ -31,6 +32,20 @@ namespace sr2_GUI
                     border += "-";
                 }
                 border += "\n";
+             
+
+            max = new double[matr.column_count];
+            for (int x = 0; x < matr.column_count; x++)
+            {
+                for (int j = 0; j < matr.row_count; j++)
+                {
+                    if (matr.GetValue(x, j) > max[x])
+                    {
+                        max[x] = matr.GetValue(x, j);
+                    }
+                }
+            }
+            
         }
 
 
@@ -45,6 +60,7 @@ namespace sr2_GUI
 
         public void Print()
         {
+            int count = 0;
             bufer.Insert(0, border); //если DrawBorder не вызывалось, то рамка не отрисуется, ведь border  -пустая
             bufer.Add(border);
             for (int i=0; i<bufer.Count; i++)
@@ -52,6 +68,8 @@ namespace sr2_GUI
                 Console.Write(bufer[i]);
                 if ((i >= count_col) && (i % count_col == 0))
                 {
+                    Console.Write(" -- " + max[count]);
+                    count++;
                     Console.WriteLine();
                 }
             }
