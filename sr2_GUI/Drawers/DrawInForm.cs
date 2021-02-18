@@ -13,7 +13,7 @@ namespace sr2_GUI
     {
         int startx=10, starty=10; //поля для запоминания точки старта
         int curX = 10, curY = 10; //текущее положение точки
-        int w = 50, h = 50; //длина и высота ячейки
+        int w = 40, h = 40; //длина и высота ячейки
 
         Brush myBrush = new SolidBrush(Color.Red); //инструменты
         Font MyFont = new Font("Arial", 16);
