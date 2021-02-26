@@ -13,6 +13,8 @@ namespace sr2_GUI
         public double GetValue(int i);           //отдает i-ое значение вектора
         public void AddValue(double chisl);      //добавляет значение в конец вектора
         public void SetValue(int h, double chislo);
+        void Draw(IDrawing drawer);
 
+        double this[int index] { get; set; }
     }
 }

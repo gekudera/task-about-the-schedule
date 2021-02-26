@@ -54,5 +54,19 @@ namespace sr2_GUI
 
         }
 
+        public double this[int rowIndex, int columnIndex]
+        {
+            get
+            {
+                if (rowIndex >= row_count || columnIndex >= column_count) return 0;
+                return matr[rowIndex][columnIndex];
+            }
+            set
+            {
+                if (!(rowIndex >= row_count || columnIndex >= column_count))
+                    matr[rowIndex][columnIndex] = value;
+            }
+        }
+
     }
 }

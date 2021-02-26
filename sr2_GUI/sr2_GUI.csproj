@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Destinations.cs" />
+    <Compile Include="Algorithms\ScheduleTask.cs" />
     <Compile Include="Drawers\DrawInConsole.cs" />
     <Compile Include="Drawers\DrawInForm.cs" />
     <Compile Include="Drawers\IDrawing.cs" />

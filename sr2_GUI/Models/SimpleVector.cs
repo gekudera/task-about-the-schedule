@@ -48,5 +48,16 @@ namespace sr2_GUI
             get { return val[index]; }
             set { val[index] = value; }
         }
+
+        public void Draw(IDrawing drawer)
+        {
+            IMatrix matr = new SomeMatrix(size, 1);
+            for (int i=0; i< size; i++)
+            {
+                matr[i, 0] = this[i];
+            }
+
+            matr.Draw(drawer);
+        }
     }
 }

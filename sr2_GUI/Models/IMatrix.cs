@@ -15,5 +15,7 @@ namespace sr2_GUI
         void SetValue(double chisl, int i, int j);                 //записывает значение
 
         void Draw(IDrawing drawer);
+
+        double this[int rowIndex, int columnIndex] { get; set; }
     }
 }

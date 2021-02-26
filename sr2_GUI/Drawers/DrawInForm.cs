@@ -13,7 +13,7 @@ namespace sr2_GUI
     {
         int startx=10, starty=10; //поля для запоминания точки старта
         int curX = 10, curY = 10; //текущее положение точки
-        int w = 40, h = 40; //длина и высота ячейки
+        int w = 45, h = 45; //длина и высота ячейки
 
         Brush myBrush = new SolidBrush(Color.Red); //инструменты
         Font MyFont = new Font("Arial", 16);
@@ -58,7 +58,7 @@ namespace sr2_GUI
             StrFormat.Alignment = StringAlignment.Center;
             StrFormat.LineAlignment = StringAlignment.Center;
 
-            string data_unit = string.Format("{0,3:00}", matr.GetValue(x, y)); ;
+            string data_unit = string.Format("{0,1:00}", matr.GetValue(x, y)); ;
             
             Rectangle rect_unit = new Rectangle(curX, curY, w, h);
             curX = curX + w;
