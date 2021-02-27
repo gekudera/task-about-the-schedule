@@ -27,7 +27,6 @@ namespace sr2_GUI
         private int count;
         private int col_count = 0;
 
-
         public DrawInForm(Graphics graph)
         {
             g = graph;

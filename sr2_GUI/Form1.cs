@@ -53,10 +53,11 @@ namespace sr2_GUI
                 }
             }
 
-            Destinations destination = new Destinations();
+            HungarianAlgorithm algorithm = new HungarianAlgorithm(a);
 
             int[] vect = new int[size];
-            vect = destination.KuhnMunkres(a);
+
+            vect = algorithm.Run();
 
             current_matrix = new SomeMatrix(1, size);
 
@@ -64,61 +65,6 @@ namespace sr2_GUI
                 current_matrix.SetValue(vect[i], 0, i);
 
             current_matrix.Draw(form);
-        }
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox3.Checked == true)
-            {
-                //штрафы
-                StreamReader file = new StreamReader(@"C:\Users\sekosh\Desktop\ДИПЛОМ\straf.txt");
-                string s = file.ReadToEnd();
-                file.Close();
-                string[] str = s.Split('\n');
-                string[] stolb = str[0].Split(' ');
-                IVector straf = new SimpleVector(str.Length);
-                IVector dir_srok = new SimpleVector(str.Length);
-                IVector srok_vip = new SimpleVector(str.Length);
-                int t = 0;
-
-                for (int i = 0; i < str.Length; i++)
-                {
-                    stolb = str[i].Split(' ');
-                    for (int j = 0; j < stolb.Length;)
-                    {
-                        t = Convert.ToInt32(stolb[j]);
-                        straf.SetValue(i, t);
-
-                        j++;
-                        t = Convert.ToInt32(stolb[j]);
-                        dir_srok.SetValue(i, t);
-
-                        j++;
-                        t = Convert.ToInt32(stolb[j]);
-                        srok_vip.SetValue(i, t);
-
-                        j++;
-                    }
-                }
-
-                b = pictureBox1.CreateGraphics();
-                b.Clear(BackColor);
-                form = new DrawInForm(b);
-                straf.Draw(form);
-
-                b = pictureBox2.CreateGraphics();
-                b.Clear(BackColor);
-                form = new DrawInForm(b);
-                dir_srok.Draw(form);
-
-                b = pictureBox3.CreateGraphics();
-                b.Clear(BackColor);
-                form = new DrawInForm(b);
-                srok_vip.Draw(form);
-
-                size = str.Length;
-                schedule = new ScheduleTask(straf, dir_srok, srok_vip);
-            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -166,6 +112,98 @@ namespace sr2_GUI
 
             current_matrix.Draw(cons);
             current_matrix.Draw(form);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //штрафы
+            StreamReader file = new StreamReader(@"C:\Users\sekosh\Desktop\ДИПЛОМ\straf.txt");
+            string s = file.ReadToEnd();
+            file.Close();
+            string[] str = s.Split('\n');
+            string[] stolb = str[0].Split(' ');
+            IVector straf = new SimpleVector(str.Length);
+            IVector dir_srok = new SimpleVector(str.Length);
+            IVector srok_vip = new SimpleVector(str.Length);
+            int t = 0;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                stolb = str[i].Split(' ');
+                for (int j = 0; j < stolb.Length;)
+                {
+                    t = Convert.ToInt32(stolb[j]);
+                    straf.SetValue(i, t);
+
+                    j++;
+                    t = Convert.ToInt32(stolb[j]);
+                    dir_srok.SetValue(i, t);
+
+                    j++;
+                    t = Convert.ToInt32(stolb[j]);
+                    srok_vip.SetValue(i, t);
+
+                    j++;
+                }
+            }
+
+            b = pictureBox1.CreateGraphics();
+            b.Clear(BackColor);
+            form = new DrawInForm(b);
+            straf.Draw(form);
+
+            b = pictureBox2.CreateGraphics();
+            b.Clear(BackColor);
+            form = new DrawInForm(b);
+            dir_srok.Draw(form);
+
+            b = pictureBox3.CreateGraphics();
+            b.Clear(BackColor);
+            form = new DrawInForm(b);
+            srok_vip.Draw(form);
+
+            size = str.Length;
+            schedule = new ScheduleTask(straf, dir_srok, srok_vip);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text != "")
+            {
+                IVector straf = new SimpleVector(size);
+                IVector dir_srok = new SimpleVector(size);
+                IVector srok_vip = new SimpleVector(size);
+
+                Random rand = new Random();
+                for (int i=0; i< size; i++)
+                {
+                    straf.SetValue(i, rand.Next(0, 20));
+                    dir_srok.SetValue(i, rand.Next(0, 20));
+                    srok_vip.SetValue(i, rand.Next(0, 20));
+                }
+
+                b = pictureBox1.CreateGraphics();
+                b.Clear(BackColor);
+                form = new DrawInForm(b);
+                straf.Draw(form);
+
+                b = pictureBox2.CreateGraphics();
+                b.Clear(BackColor);
+                form = new DrawInForm(b);
+                dir_srok.Draw(form);
+
+                b = pictureBox3.CreateGraphics();
+                b.Clear(BackColor);
+                form = new DrawInForm(b);
+                srok_vip.Draw(form);
+
+                schedule = new ScheduleTask(straf, dir_srok, srok_vip);
+
+            }
+            else
+            {
+                MessageBox.Show("Введите в текстбокс количество работ!");
+            }
         }
     }
 }

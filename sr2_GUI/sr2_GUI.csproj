@@ -66,7 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Destinations.cs" />
     <Compile Include="Algorithms\ScheduleTask.cs" />
     <Compile Include="Drawers\DrawInConsole.cs" />
     <Compile Include="Drawers\DrawInForm.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Algorithms\HungarianAlgorithm.cs" />
     <Compile Include="Models\IMatrix.cs" />
     <Compile Include="Models\InitiatorMatrix.cs" />
     <Compile Include="Models\IVector.cs" />
