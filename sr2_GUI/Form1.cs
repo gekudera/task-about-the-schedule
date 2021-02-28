@@ -44,20 +44,20 @@ namespace sr2_GUI
             cons = new DrawInConsole();
             form = new DrawInForm(b);
 
-            int[,] a = new int[size, size];
-            for (int i=0; i<size; i++)
+            List<List<int>> a = new List<List<int>>();
+            for (int i = 0; i < size; i++)
             {
-                for (int j=0; j<size; j++)
+                a.Add(new List<int>());
+                for (int j = 0; j < size; j++)
                 {
-                    a[i, j] = Convert.ToInt32(current_matrix.GetValue(i, j));
+                    a[i].Add(Convert.ToInt32(current_matrix.GetValue(i, j)));
                 }
             }
 
-            HungarianAlgorithm algorithm = new HungarianAlgorithm(a);
+            HungarianAlgorithm algorithm = new HungarianAlgorithm(size);
 
             int[] vect = new int[size];
-
-            vect = algorithm.Run();
+            vect = algorithm.Solve(a);
 
             current_matrix = new SomeMatrix(1, size);
 
