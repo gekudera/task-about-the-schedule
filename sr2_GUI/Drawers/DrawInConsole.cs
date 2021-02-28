@@ -49,7 +49,7 @@ namespace sr2_GUI
         }
 
 
-        public void DrawUnit(IMatrix matr, int x, int y)
+        public void DrawUnit(IMatrix matr, bool ismarked, int x, int y)
         {
             buf_el = "";
             buf_el += String.Format("{0, -4:00}", matr.GetValue(x, y));

@@ -6,6 +6,7 @@ namespace sr2_GUI
     {
         private int row, col;
         private IVector[] matr;
+        private int[] marked_unit;
 
         public SomeMatrix(int r, int c)
         {
@@ -16,6 +17,9 @@ namespace sr2_GUI
             {
                 matr[i] = new SimpleVector(c);
             }
+            marked_unit = new int[r];
+            for (int j = 0; j < r; j++)
+                marked_unit[j] = -1;
         }
 
 
@@ -45,9 +49,13 @@ namespace sr2_GUI
 
             for (int i = 0; i < row_count; i++)
             {
+                int marked_un = marked_unit[i];
                 for (int j = 0; j < column_count; j++)
                 {
-                    drawer.DrawUnit(this, i, j);
+                    if (j == marked_un)
+                        drawer.DrawUnit(this, true, i, j);
+                    else
+                        drawer.DrawUnit(this, false, i, j);
                 }
             }
             drawer.Print();
@@ -68,5 +76,12 @@ namespace sr2_GUI
             }
         }
 
+        public void MarkUnit(int[] vector)
+        {
+                for (int i = 0; i < vector.Length; i++)
+                { 
+                    marked_unit[i] = vector[i];
+                }
+        }
     }
 }

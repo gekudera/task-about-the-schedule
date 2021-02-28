@@ -44,25 +44,20 @@ namespace sr2_GUI
             cons = new DrawInConsole();
             form = new DrawInForm(b);
 
-            List<List<int>> a = new List<List<int>>();
+            int[,] a = new int[size,size];
             for (int i = 0; i < size; i++)
             {
-                a.Add(new List<int>());
                 for (int j = 0; j < size; j++)
                 {
-                    a[i].Add(Convert.ToInt32(current_matrix.GetValue(i, j)));
+                    a[i, j] = Convert.ToInt32(current_matrix.GetValue(i, j));
                 }
             }
 
-            HungarianAlgorithm algorithm = new HungarianAlgorithm(size);
+            HungarianAlgorithm algorithm = new HungarianAlgorithm(a);
 
             int[] vect = new int[size];
-            vect = algorithm.Solve(a);
-
-            current_matrix = new SomeMatrix(1, size);
-
-            for (int i = 0; i < size; i++)
-                current_matrix.SetValue(vect[i], 0, i);
+            vect = algorithm.Run();
+            current_matrix.MarkUnit(vect);
 
             current_matrix.Draw(form);
         }
@@ -117,7 +112,7 @@ namespace sr2_GUI
         private void button5_Click(object sender, EventArgs e)
         {
             //штрафы
-            StreamReader file = new StreamReader(@"C:\Users\sekosh\Desktop\ДИПЛОМ\straf.txt");
+            StreamReader file = new StreamReader(Application.StartupPath + "\\straf.txt");
             string s = file.ReadToEnd();
             file.Close();
             string[] str = s.Split('\n');

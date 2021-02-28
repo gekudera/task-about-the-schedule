@@ -16,6 +16,7 @@ namespace sr2_GUI
         int w = 45, h = 45; //длина и высота ячейки
 
         Brush myBrush = new SolidBrush(Color.Red); //инструменты
+        Brush markedBrush = new SolidBrush(Color.Blue);
         Font MyFont = new Font("Arial", 16);
         StringFormat StrFormat;
         Pen p = new Pen(Color.Black, 6);
@@ -23,14 +24,17 @@ namespace sr2_GUI
         Graphics g;
 
         private Dictionary<Rectangle, string> bufer; //буфер данных
+        private List<bool> ismarked;
         private List<Point> points;
         private int count;
         private int col_count = 0;
+
 
         public DrawInForm(Graphics graph)
         {
             g = graph;
             bufer = new Dictionary<Rectangle, string>();
+            ismarked = new List<bool>();
             points = new List<Point>();
             count = 0;
         }
@@ -51,18 +55,19 @@ namespace sr2_GUI
             
         }
 
-        public void DrawUnit(IMatrix matr, int x, int y)
+        public void DrawUnit(IMatrix matr, bool ismark, int x, int y)
         {
             StrFormat = new StringFormat();
             StrFormat.Alignment = StringAlignment.Center;
             StrFormat.LineAlignment = StringAlignment.Center;
 
-            string data_unit = string.Format("{0,1:00}", matr.GetValue(x, y)); ;
+            string data_unit = string.Format("{0,1:00}", matr.GetValue(x, y)); 
             
             Rectangle rect_unit = new Rectangle(curX, curY, w, h);
             curX = curX + w;
 
             bufer.Add(rect_unit, data_unit);
+            ismarked.Add(ismark);
 
             count++;
             if (count == col_count)
@@ -79,10 +84,15 @@ namespace sr2_GUI
              g.DrawLine(p, points[1], points[2]);
              g.DrawLine(p, points[2], points[3]);
              g.DrawLine(p, points[3], points[0]);
-            
+
+            int ccol = 0;
             foreach (var item in bufer)
             {
-                g.DrawString(item.Value, MyFont, myBrush, item.Key, StrFormat); //отрисовка самих ячеек
+                if (ismarked[ccol] == false)
+                    g.DrawString(item.Value, MyFont, myBrush, item.Key, StrFormat); 
+                else
+                    g.DrawString(item.Value, MyFont, markedBrush, item.Key, StrFormat);
+                ccol++;
             }
 
             foreach (var item in bufer)

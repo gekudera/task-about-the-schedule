@@ -16,6 +16,8 @@ namespace sr2_GUI
 
         void Draw(IDrawing drawer);
 
+        void MarkUnit(int[] vect);
+
         double this[int rowIndex, int columnIndex] { get; set; }
     }
 }
