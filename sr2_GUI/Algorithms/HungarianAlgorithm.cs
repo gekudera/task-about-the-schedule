@@ -72,7 +72,7 @@ namespace sr2_GUI
                 int x;
                 var y = 0;
 
-                //find root of the tree
+                //нахождение неназначенного корня(работника)
                 for (x = 0; x < _n; x++)
                 {
                     if (_matchX[x] != -1) continue; //i++
@@ -110,7 +110,8 @@ namespace sr2_GUI
                         if (y < _n) break; //augmenting path found!
                     }
                     if (y < _n) break; //augmenting path found!
-                    UpdateLabels(); //augmenting path not found, update labels
+
+                    UpdateLabels();   //augmenting path not found, update labels
 
                     for (y = 0; y < _n; y++)
                     {
@@ -137,8 +138,15 @@ namespace sr2_GUI
                     ty = _matchX[cx];
                     _matchY[cy] = cx;
                     _matchX[cx] = cy;
+                    //Console.Write("\nработник" + cx + " выбрал " + cy + "работу");
                 }
             }
+
+            Console.Write("Вектор решения задачи о назначениях: ");
+            for (int i = 0; i < _n; i++)
+                Console.Write(_matchX[i] + "  ");
+            Console.WriteLine();
+
 
             return _matchX;
         }
@@ -164,6 +172,7 @@ namespace sr2_GUI
                 }
                 _V[i] = minRow;
             }
+       
             for (var j = 0; j < _n; j++)
             {
                 var minColumn = _costMatrix[0, j] - _V[0];

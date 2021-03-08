@@ -18,9 +18,11 @@ namespace sr2_GUI
         Graphics b;
         IMatrix current_matrix;
 
-        //в будущем объединить в структуру
         ScheduleTask schedule;
+        HungarianAlgorithm algorithm;
         int size = 0;
+        int[,] solution_vector;
+        int[,] a;
 
         DrawInConsole cons;
         DrawInForm form;
@@ -44,7 +46,7 @@ namespace sr2_GUI
             cons = new DrawInConsole();
             form = new DrawInForm(b);
 
-            int[,] a = new int[size,size];
+            a = new int[size,size];
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
@@ -53,13 +55,22 @@ namespace sr2_GUI
                 }
             }
 
-            HungarianAlgorithm algorithm = new HungarianAlgorithm(a);
+            algorithm = new HungarianAlgorithm(a);
 
             int[] vect = new int[size];
             vect = algorithm.Run();
+            int Cmin = 0;
             current_matrix.MarkUnit(vect);
 
+            solution_vector = new int[1, size];
+            for (int i=0; i<size; i++)
+            {
+                solution_vector[0, i] = vect[i];
+                Cmin += a[i, vect[i]];
+            }
+
             current_matrix.Draw(form);
+            current_matrix.Draw(cons);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -172,9 +183,9 @@ namespace sr2_GUI
                 Random rand = new Random();
                 for (int i=0; i< size; i++)
                 {
-                    straf.SetValue(i, rand.Next(0, 20));
-                    dir_srok.SetValue(i, rand.Next(0, 20));
-                    srok_vip.SetValue(i, rand.Next(0, 20));
+                    straf.SetValue(i, rand.Next(1, 10));
+                    dir_srok.SetValue(i, rand.Next(20, 30));
+                    srok_vip.SetValue(i, rand.Next(1, 20));
                 }
 
                 b = pictureBox1.CreateGraphics();
@@ -198,6 +209,107 @@ namespace sr2_GUI
             else
             {
                 MessageBox.Show("Введите в текстбокс количество работ!");
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            IMatrix matr = new SomeMatrix(size, size);
+            int[] vect = new int[size];
+            int[,] last = new int[size, size];
+            bool flag = true;
+            int Cmin = 0;
+            int count = 0;
+
+            while (flag == true)
+            {
+                count++;
+                matr = schedule.MakeStrafMatrix(solution_vector);
+
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        last[i, j] = a[i, j];
+                        a[i, j] = Convert.ToInt32(matr.GetValue(i, j));
+                    }
+                }
+
+                algorithm = new HungarianAlgorithm(a);
+                vect = algorithm.Run();
+                matr.MarkUnit(vect);
+
+                flag = false;
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j=0; j<size; j++)
+                    {
+                        if (a[i, j] != last[i, j])
+                            flag = true;
+                    }
+                }
+
+                Cmin = 0;
+                for (int i = 0; i < size; i++)
+                {
+                    solution_vector[0, i] = vect[i];
+                    Cmin += a[i, vect[i]];
+                }
+                Console.Write("\nCmin =" + Cmin + "\n");
+            }
+
+            b = pictureBox4.CreateGraphics();
+            b.Clear(BackColor);
+            try
+            {
+                b.Clear(BackColor);
+                using (Font myFont = new Font("Arial", 20))
+                {
+                    b.DrawString("Cmin = " + Cmin.ToString(), myFont, Brushes.Blue, new PointF(2, 2));
+                }
+            }
+            finally
+            {
+                b.Dispose();
+            }
+
+            b = picBox.CreateGraphics();
+            b.Clear(BackColor);
+            form = new DrawInForm(b);
+            matr.Draw(form);
+            Console.WriteLine(count);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            current_matrix = schedule.MakeStrafMatrix(solution_vector);
+
+            int Cmin = 0;
+            for (int i = 0; i < size; i++)
+            {
+                Cmin += (int)current_matrix[i, solution_vector[0, i]];
+            }
+            Console.Write("\nCmin =" + Cmin + "\n");
+        
+
+            b = picBox.CreateGraphics();
+            b.Clear(BackColor);
+            form = new DrawInForm(b);
+            current_matrix.Draw(form);
+
+            b = pictureBox4.CreateGraphics();
+            b.Clear(BackColor);
+            try
+            {
+                b.Clear(BackColor);
+                using (Font myFont = new Font("Arial", 20))
+                {
+                    b.DrawString("Cmin = " + Cmin.ToString(), myFont, Brushes.Blue, new PointF(2, 2));
+                }
+            }
+            finally
+            {
+                b.Dispose();
             }
         }
     }

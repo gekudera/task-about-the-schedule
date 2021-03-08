@@ -41,7 +41,7 @@ namespace sr2_GUI
 
         public void DrawBorder(IMatrix matr)
         {
-            col_count = matr.column_count;
+                col_count = matr.column_count;
                 int dlin = matr.row_count;
                 int shir = matr.column_count;
                 Point p1 = new Point(startx, starty);

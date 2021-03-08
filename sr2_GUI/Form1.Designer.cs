@@ -44,15 +44,21 @@
             this.label6 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // picBox
             // 
-            this.picBox.Location = new System.Drawing.Point(766, 135);
+            this.picBox.Location = new System.Drawing.Point(737, 202);
             this.picBox.Margin = new System.Windows.Forms.Padding(4);
             this.picBox.Name = "picBox";
             this.picBox.Size = new System.Drawing.Size(548, 499);
@@ -80,10 +86,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1167, 24);
+            this.button2.Location = new System.Drawing.Point(919, 43);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(177, 80);
+            this.button2.Size = new System.Drawing.Size(121, 61);
             this.button2.TabIndex = 8;
             this.button2.Text = "Найти решение задачи о назначениях";
             this.button2.UseVisualStyleBackColor = true;
@@ -94,7 +100,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(56, 230);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(183, 434);
+            this.pictureBox1.Size = new System.Drawing.Size(183, 471);
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
@@ -103,7 +109,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(283, 230);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(180, 434);
+            this.pictureBox2.Size = new System.Drawing.Size(180, 471);
             this.pictureBox2.TabIndex = 12;
             this.pictureBox2.TabStop = false;
             // 
@@ -131,12 +137,12 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(734, 24);
+            this.button1.Location = new System.Drawing.Point(602, 45);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(169, 80);
+            this.button1.Size = new System.Drawing.Size(123, 61);
             this.button1.TabIndex = 15;
-            this.button1.Text = "Сформировать n векторов для начальной очереди";
+            this.button1.Text = "Сформировать n векторов для нач.очереди";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
@@ -145,7 +151,7 @@
             this.pictureBox3.Location = new System.Drawing.Point(504, 230);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(183, 434);
+            this.pictureBox3.Size = new System.Drawing.Size(183, 471);
             this.pictureBox3.TabIndex = 16;
             this.pictureBox3.TabStop = false;
             // 
@@ -156,16 +162,16 @@
             this.label4.ForeColor = System.Drawing.Color.Red;
             this.label4.Location = new System.Drawing.Point(499, 190);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(228, 25);
+            this.label4.Size = new System.Drawing.Size(180, 25);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Вектор ср. выполнения";
+            this.label4.Text = "Вектор длительн.";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(949, 24);
+            this.button3.Location = new System.Drawing.Point(777, 43);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(169, 80);
+            this.button3.Size = new System.Drawing.Size(90, 61);
             this.button3.TabIndex = 18;
             this.button3.Text = "Найти начальную матрицу штрафов";
             this.button3.UseVisualStyleBackColor = true;
@@ -175,7 +181,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label5.Location = new System.Drawing.Point(904, 45);
+            this.label5.Location = new System.Drawing.Point(732, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 25);
             this.label5.TabIndex = 19;
@@ -185,7 +191,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label6.Location = new System.Drawing.Point(1125, 45);
+            this.label6.Location = new System.Drawing.Point(874, 60);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 25);
             this.label6.TabIndex = 20;
@@ -193,10 +199,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(306, 45);
+            this.button4.Location = new System.Drawing.Point(292, 26);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(246, 42);
+            this.button4.Size = new System.Drawing.Size(246, 47);
             this.button4.TabIndex = 21;
             this.button4.Text = "Сформировать вектора рандомно";
             this.button4.UseVisualStyleBackColor = true;
@@ -204,7 +210,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(306, 95);
+            this.button5.Location = new System.Drawing.Point(292, 90);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(246, 51);
@@ -213,11 +219,67 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1242, 43);
+            this.button6.Margin = new System.Windows.Forms.Padding(4);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(129, 61);
+            this.button6.TabIndex = 23;
+            this.button6.Text = "Повторять цикл до нахождения решения";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label7.Location = new System.Drawing.Point(1197, 64);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 25);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "-->";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Location = new System.Drawing.Point(808, 149);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(333, 45);
+            this.pictureBox4.TabIndex = 25;
+            this.pictureBox4.TabStop = false;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1084, 43);
+            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(121, 61);
+            this.button7.TabIndex = 26;
+            this.button7.Text = "Уточнить матрицу производительностей";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label8.Location = new System.Drawing.Point(1039, 60);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(38, 25);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "-->";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1386, 730);
+            this.ClientSize = new System.Drawing.Size(1388, 749);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.pictureBox4);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label6);
@@ -241,6 +303,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,6 +326,11 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label8;
     }
 }
 
